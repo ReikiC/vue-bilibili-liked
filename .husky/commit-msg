@@ -1,1 +1,5 @@
-'npx --no -- commitlint --edit ${1}'
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# 使用项目内的 commitlint
+npx --no -- commitlint --edit "$1"
