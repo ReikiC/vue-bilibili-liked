@@ -1,6 +1,6 @@
 <template>
   <div>
-    <hi> hi {{ msg }} </hi>
+    <h1>hi {{ msg }}</h1>
     <!-- <div @click="add">{{ count }}</div> -->
 
     <input type="text" v-model="val" @keypress.enter="addTodo" />
@@ -14,6 +14,7 @@
       </li>
     </ul>
     <div>
+      <div><input type="checkbox" v-model="allDone" /> selectAll</div>
       {{ doneCount }} /
       {{ todos.length }}
     </div>
@@ -36,6 +37,16 @@ export default defineComponent({
     }
   },
   computed: {
+    allDone: {
+      get() {
+        return this.doneCount === this.todos.length
+      },
+      set(value: boolean) {
+        this.todos.forEach((todo) => {
+          todo.done = value
+        })
+      },
+    },
     doneCount() {
       return this.todos.filter((v) => v.done).length
     },
