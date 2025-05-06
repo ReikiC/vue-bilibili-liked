@@ -29,12 +29,23 @@ export default defineComponent({
       msg: 'Wellcome to Your Vue.js App',
       count: 1,
       val: '',
-      todos: [
-        { title: 'eat', done: true },
-        { title: 'sleep', done: false },
-        { title: 'code', done: true },
-      ],
+      todos: localStorage.getItem('todos')
+        ? JSON.parse(localStorage.getItem('todos') as string)
+        : [
+            { title: 'eat', done: true },
+            { title: 'sleep', done: false },
+            { title: 'code', done: true },
+          ],
     }
+  },
+  watch: {
+    todos: {
+      handler() {
+        localStorage.setItem('todos', JSON.stringify(this.todos))
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   computed: {
     allDone: {
@@ -42,13 +53,13 @@ export default defineComponent({
         return this.doneCount === this.todos.length
       },
       set(value: boolean) {
-        this.todos.forEach((todo) => {
+        this.todos.forEach((todo: { title: string; done: boolean }) => {
           todo.done = value
         })
       },
     },
     doneCount() {
-      return this.todos.filter((v) => v.done).length
+      return this.todos.filter((v: { title: string; done: boolean }) => v.done).length
     },
   },
   methods: {
